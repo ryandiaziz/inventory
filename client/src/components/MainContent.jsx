@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { readItem } from '../axios/item'
 import CardC from './Card'
-import { Button } from '@material-tailwind/react'
+import { Button, Alert, Typography } from '@material-tailwind/react'
 import ModalAdd from './ModalAdd'
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 
 const MainContent = () => {
     const [items, setItems] = useState([])
     const [open, setOpen] = useState(false)
     const [updated, setUpdated] = useState(false)
+    const [alert, setAlert] = useState(false)
 
     const handleOpen = () => setOpen(!open);
 
@@ -18,9 +20,24 @@ const MainContent = () => {
     }, [updated])
     return (
         <>
+            <div className='fixed z-50 bottom-5 right-5'>
+                <Alert
+                    open={alert}
+                    color="green"
+                    className="max-w-screen-md"
+                    icon={<CheckCircleIcon className="mt-px h-6 w-6" />}
+                    onClose={() => setAlert(false)}
+                >
+                    <Typography variant="h5" color="white">
+                        Barang berhasil dihapus
+                    </Typography>
+                </Alert>
+            </div>
             <ModalAdd
                 open={open}
                 handleOpen={handleOpen}
+                updated={updated}
+                setUpdated={setUpdated}
             />
             <div className='mx-auto max-w-screen-xl px-4 py-3 flex flex-wrap gap-5'>
                 <Button
@@ -41,6 +58,7 @@ const MainContent = () => {
                             item={item}
                             updated={updated}
                             setUpdated={setUpdated}
+                            setAlert={setAlert}
                         />
                     ))
                 }

@@ -12,6 +12,13 @@ const ButtonGroupC = (props) => {
         deleteItem(id, (result) => {
             if (result === 1) {
                 refreshData()
+                props.setAlert(true)
+                const timeout = setTimeout(() => {
+                    props.setAlert(false)
+                }, 1500)
+                return () => {
+                    clearTimeout(timeout)
+                }
             }
         })
     }

@@ -26,7 +26,25 @@ const deleteItem = async (id, cb) => {
     }
 }
 
+const createItem = async (items, cb) => {
+    try {
+        let result = await axios({
+            method: 'POST',
+            url: URL + "/create",
+            data: items,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        })
+        cb();
+        console.log(result.data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export {
     readItem,
     deleteItem,
+    createItem,
 }

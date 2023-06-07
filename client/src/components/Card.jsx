@@ -14,7 +14,7 @@ const CardC = (props) => {
         <Card className="w-64">
             <CardHeader shadow={false} floated={false} >
                 <img
-                    src={props.item.imageUrl}
+                    src={`http://localhost:3000/${props.item.imageUrl}`}
                     className="w-full object-cover h-40"
                     alt='Barang'
                 />
@@ -55,6 +55,7 @@ const CardC = (props) => {
                     id={props.item.id}
                     updated={props.updated}
                     setUpdated={props.setUpdated}
+                    setAlert={props.setAlert}
                 />
             </CardFooter>
         </Card>
