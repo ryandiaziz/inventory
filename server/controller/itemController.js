@@ -33,9 +33,7 @@ class ItemController {
                 where: { id }
             })
             result === 1
-                ? res.status(200).json({
-                    message: 'Item deleted'
-                })
+                ? res.status(200).json(result)
                 : res.status(404).json({
                     message: 'Item not found'
                 })
