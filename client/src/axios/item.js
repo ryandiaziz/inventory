@@ -36,8 +36,45 @@ const createItem = async (items, cb) => {
                 'Content-Type': 'multipart/form-data',
             }
         })
+        cb(result.data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const detailItem = async (id, cb) => {
+    try {
+        let result = await axios({
+            method: 'GET',
+            url: URL + `/detail/${id}`
+        })
+        cb(result.data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const updateItem = async (id, datas, cb) => {
+    try {
+        await axios({
+            method: 'PUT',
+            url: URL + `/update/${id}`,
+            data: datas,
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
         cb();
-        console.log(result.data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const searchItem = async (query, cb) => {
+    try {
+        let result = await axios({
+            method: 'GET',
+            url: URL + `/search?key=${query}`
+        })
+        cb(result.data)
     } catch (error) {
         console.log(error);
     }
@@ -47,4 +84,7 @@ export {
     readItem,
     deleteItem,
     createItem,
+    detailItem,
+    updateItem,
+    searchItem,
 }

@@ -55,7 +55,7 @@ const CardC = (props) => {
                     id={props.item.id}
                     updated={props.updated}
                     setUpdated={props.setUpdated}
-                    setAlert={props.setAlert}
+                    setAlertS={props.setAlertS}
                 />
             </CardFooter>
         </Card>

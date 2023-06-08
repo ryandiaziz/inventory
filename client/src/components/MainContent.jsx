@@ -1,39 +1,42 @@
-import React, { useState, useEffect } from 'react'
-import { readItem } from '../axios/item'
+import React, { useState } from 'react'
 import CardC from './Card'
 import { Button, Alert, Typography } from '@material-tailwind/react'
-import ModalAdd from './ModalAdd'
+import Modal from './Modal'
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import Pagination from './Pagination'
 
-const MainContent = () => {
-    const [items, setItems] = useState([])
+const MainContent = ({
+    items,
+    updated,
+    setUpdated,
+    currentPage,
+    setCurrentPage,
+    postPerPage,
+    currentPosts
+}) => {
     const [open, setOpen] = useState(false)
-    const [updated, setUpdated] = useState(false)
-    const [alert, setAlert] = useState(false)
+    const [alertS, setAlertS] = useState(false)
 
-    const handleOpen = () => setOpen(!open);
+    const handleOpen = () => setOpen(!open)
 
-    useEffect(() => {
-        readItem((result) => {
-            setItems(result)
-        })
-    }, [updated])
     return (
         <>
             <div className='fixed z-50 bottom-5 right-5'>
+                {/* success alert */}
                 <Alert
-                    open={alert}
+                    open={alertS}
                     color="green"
                     className="max-w-screen-md"
                     icon={<CheckCircleIcon className="mt-px h-6 w-6" />}
-                    onClose={() => setAlert(false)}
+                    onClose={() => setAlertS(false)}
                 >
                     <Typography variant="h5" color="white">
                         Barang berhasil dihapus
                     </Typography>
                 </Alert>
             </div>
-            <ModalAdd
+            <Modal
+                title="Tambah Barang"
                 open={open}
                 handleOpen={handleOpen}
                 updated={updated}
@@ -52,17 +55,23 @@ const MainContent = () => {
             </div>
             <div className='mx-auto max-w-screen-xl px-4 py-3 flex flex-wrap gap-5'>
                 {
-                    items.map((item) => (
+                    currentPosts.map((item) => (
                         <CardC
                             key={item.id}
                             item={item}
                             updated={updated}
                             setUpdated={setUpdated}
-                            setAlert={setAlert}
+                            setAlertS={setAlertS}
                         />
                     ))
                 }
             </div>
+            <Pagination
+                totalPosts={items.length}
+                postPerPage={postPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
         </>
     )
 }

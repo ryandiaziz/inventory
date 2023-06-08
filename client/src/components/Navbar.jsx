@@ -5,7 +5,7 @@ import {
     Input,
 } from "@material-tailwind/react";
 
-const NavbarC = () => {
+const NavbarC = (props) => {
     return (
         <Navbar className="mx-auto max-w-screen-xl px-4 py-3">
             <div className="flex flex-wrap items-center justify-between gap-y-4 text-blue-gray-900">
@@ -19,6 +19,7 @@ const NavbarC = () => {
                 </Typography>
                 <div className="relative flex w-full gap-2 md:w-max">
                     <Input
+                        onChange={props.handleChange}
                         type="search"
                         label="Ketik disini..."
                         className="pr-20"
