@@ -17,8 +17,6 @@ const MainContent = ({
     const [open, setOpen] = useState(false)
     const [alertS, setAlertS] = useState(false)
 
-    const handleOpen = () => setOpen(!open)
-
     return (
         <>
             <div className='fixed z-50 bottom-5 right-5'>
@@ -38,13 +36,13 @@ const MainContent = ({
             <Modal
                 title="Tambah Barang"
                 open={open}
-                handleOpen={handleOpen}
+                setOpen={setOpen}
                 updated={updated}
                 setUpdated={setUpdated}
             />
             <div className='mx-auto max-w-screen-xl px-4 py-3 flex flex-wrap gap-5'>
                 <Button
-                    onClick={handleOpen}
+                    onClick={() => setOpen(true)}
                     className="flex items-center gap-3 bg-[#00c9a7]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">

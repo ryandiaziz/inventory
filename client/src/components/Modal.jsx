@@ -37,13 +37,13 @@ const Modal = (props) => {
     const submitHandler = () => {
         if (props.edit) {
             updateItem(formik.values.id, formik.values, () => {
-                props.handleOpen()
+                props.setOpen(false)
                 props.setUpdated(!props.updated)
             })
         } else {
             createItem(formik.values, (result) => {
                 if (result.data) {
-                    props.handleOpen()
+                    props.setOpen(false)
                     props.setUpdated(!props.updated)
                 } else {
                     setAlertF(true)
@@ -101,7 +101,7 @@ const Modal = (props) => {
     };
 
     useEffect(() => {
-        if (!props.open) {
+        if (!props.isEdit) {
             setUploadImage(null);
             formik.setValues({
                 name: '',
@@ -127,7 +127,7 @@ const Modal = (props) => {
     }, [props.edit])
     return (
         <>
-            <Dialog open={props.open} handler={props.handleOpen}>
+            <Dialog open={props.open} handler={() => props.setOpen(false)}>
                 {/* warning alert */}
                 <div className='fixed z-50 bottom-5 right-5'>
                     <Alert
@@ -233,7 +233,7 @@ const Modal = (props) => {
                         <Button
                             variant="text"
                             color="red"
-                            onClick={props.handleOpen}
+                            onClick={() => props.setOpen(false)}
                             className="mr-1"
                         >
                             <span>Batal</span>

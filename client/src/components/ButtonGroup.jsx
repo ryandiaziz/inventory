@@ -9,7 +9,6 @@ const ButtonGroupC = (props) => {
     const [open, setOpen] = useState(false)
     const [edit, setEdit] = useState(false)
 
-    const handleOpen = () => setOpen(!open);
     const handleEdit = () => setEdit(!edit);
     const refreshData = () => props.setUpdated(!props.updated);
     const handleOpenDialog = () => setOpenDialog(!openDialog);
@@ -30,9 +29,10 @@ const ButtonGroupC = (props) => {
     return (
         <>
             <Modal
+                isEdit={true}
                 title="Edit Barang"
                 open={open}
-                handleOpen={handleOpen}
+                setOpen={setOpen}
                 updated={props.updated}
                 setUpdated={props.setUpdated}
                 edit={edit}
@@ -47,7 +47,8 @@ const ButtonGroupC = (props) => {
             <ButtonGroup variant="outlined" color="purple">
                 <Button
                     onClick={() => {
-                        handleOpen()
+                        setOpen(true)
+                        console.log(true);
                         handleEdit()
                     }}
                     className="text-[#4d8076]"
