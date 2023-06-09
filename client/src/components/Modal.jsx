@@ -240,7 +240,7 @@ const Modal = (props) => {
                                         </svg>
                                     </div>
                                     : <img
-                                        src={uploadImage || `https://22ba-36-85-109-125.ngrok-free.app/${imageUrl}`}
+                                        src={uploadImage || `https://635e-36-85-109-125.ngrok-free.app/${imageUrl}`}
                                         className="img-thumbnail h-32 w-32 object-cover rounded-full mb-1 m-auto"
                                         alt="Barang"
                                         width="300px"
