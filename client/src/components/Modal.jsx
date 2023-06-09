@@ -146,11 +146,11 @@ const Modal = (props) => {
             detailItem(props.id, (result) => {
                 setImageUrl(result.imageUrl)
                 formik.setValues({
-                    id: 44,
-                    name: "dodo",
-                    purchasePrice: 9000,
-                    sellPrice: 10000,
-                    stock: 77,
+                    id: result.id,
+                    name: result.name,
+                    purchasePrice: result.purchasePrice,
+                    sellPrice: result.sellPrice,
+                    stock: result.stock,
                 });
             })
         }
