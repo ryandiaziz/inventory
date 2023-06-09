@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const URL = 'http://localhost:3000/api'
+const URL = 'https://22ba-36-85-109-125.ngrok-free.app/api'
 
 const readItem = async (cb) => {
     try {
