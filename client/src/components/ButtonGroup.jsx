@@ -2,7 +2,7 @@ import { ButtonGroup, Button } from "@material-tailwind/react";
 import React, { useState } from "react";
 import ConfirmDialog from "./ConfirmDialog";
 import { deleteItem } from "../axios/item";
-import Modal from "./Modal";
+import ModalEdit from "./ModalEdit";
 
 const ButtonGroupC = (props) => {
     const [openDialog, setOpenDialog] = useState(false)
@@ -28,7 +28,7 @@ const ButtonGroupC = (props) => {
     }
     return (
         <>
-            <Modal
+            <ModalEdit
                 isEdit={true}
                 title="Edit Barang"
                 open={open}
@@ -48,7 +48,6 @@ const ButtonGroupC = (props) => {
                 <Button
                     onClick={() => {
                         setOpen(true)
-                        console.log(true);
                         handleEdit()
                     }}
                     className="text-[#4d8076]"

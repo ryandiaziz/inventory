@@ -11,26 +11,17 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { setLocale } from 'yup';
-import { createItem, detailItem, updateItem } from "../axios/item";
+import { detailItem, updateItem } from "../axios/item";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
-const Modal = (props) => {
+const ModalEdit = (props) => {
     const [uploadImage, setUploadImage] = useState(null)
     const [name, setName] = useState(false)
     const [purchaseP, setPurchaseP] = useState(false)
     const [sellP, setSellP] = useState(false)
     const [stock, setStock] = useState(false)
     const [imageUrl, setImageUrl] = useState('')
-    const [item, setItem] = useState({})
     const [alertF, setAlertF] = useState(false)
-    const supported_format = ["image/jpg", "image/png"]
-    const maxFIleSize = 102400
-
-    const validFileExtensions = { image: ['jpg', 'png',] };
-
-    function isValidFileType(fileName, fileType) {
-        return fileName && validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1;
-    }
 
     setLocale({
         mixed: {
@@ -41,34 +32,25 @@ const Modal = (props) => {
     function handleUploadChange(e) {
         let uploaded = e.target.files[0];
         formik.setFieldValue('imageUrl', uploaded);
-        setImageUrl('');
+        setImageUrl(null);
         setUploadImage(URL.createObjectURL(uploaded));
     }
+
     const submitHandler = () => {
-        if (props.isEdit) {
-            console.log("MASOK");
-            // formik.setFieldValue('imageUrl', imageUrl)
-            // updateItem(formik.values.id, formik.values, () => {
-            //     props.setOpen(false)
-            //     props.setUpdated(!props.updated)
-            // })
-        } else {
-            // console.log(formik.values.imageUrl);
-            createItem(formik.values, (result) => {
-                if (result.data) {
-                    props.setOpen(false)
-                    props.setUpdated(!props.updated)
-                } else {
-                    setAlertF(true)
-                    const timeout = setTimeout(() => {
-                        setAlertF(false)
-                    }, 5000)
-                    return () => {
-                        clearTimeout(timeout)
-                    }
-                }
-            })
-        }
+        // console.log(imageUrl.length);
+        // if (uploadImage !== null) {
+        //     console.log(formik.values.imageUrl);
+        //     console.log('upload');
+        // } else {
+        //     formik.setFieldValue('imageUrl', imageUrl)
+        //     console.log(formik.values.imageUrl);
+        //     console.log('ga upload');
+        // }
+        // console.log('baru di gas');
+        updateItem(formik.values.id, formik.values, () => {
+            props.setOpen(false)
+            props.setUpdated(!props.updated)
+        })
     }
 
     const handleFocus = (e) => {
@@ -104,20 +86,6 @@ const Modal = (props) => {
             purchasePrice: yup.number().typeError('Masukkan angka').required(),
             sellPrice: yup.number().typeError('Masukkan angka').required(),
             stock: yup.number().typeError('Masukkan angka').required(),
-            imageUrl: yup
-                .mixed()
-                .nullable()
-                .required()
-                .test(
-                    "FILE_SIZE",
-                    "Ukuran gambar terlalu besar",
-                    (value) => !value || (value && value.size <= maxFIleSize)
-                )
-                .test(
-                    "FILE_FORMAT",
-                    "Format gambar tidak sesuai",
-                    value => isValidFileType(value && value.name.toLowerCase(), "image")
-                )
         }),
     });
 
@@ -125,23 +93,6 @@ const Modal = (props) => {
         const { target } = event;
         formik.setFieldValue(target.name, target.value);
     };
-
-    useEffect(() => {
-        if (!props.isEdit) {
-            setUploadImage(null);
-            formik.setValues({
-                name: '',
-                purchasePrice: undefined,
-                sellPrice: undefined,
-                stock: undefined,
-                imageUrl: null,
-            })
-            setName(false)
-            setPurchaseP(false)
-            setSellP(false)
-            setStock(false)
-        }
-    }, [props.open])
 
     useEffect(() => {
         if (props.edit) {
@@ -153,6 +104,7 @@ const Modal = (props) => {
                     purchasePrice: result.purchasePrice,
                     sellPrice: result.sellPrice,
                     stock: result.stock,
+                    imageUrl: result.imageUrl,
                 });
             })
         }
@@ -292,4 +244,4 @@ const Modal = (props) => {
     );
 }
 
-export default Modal
+export default ModalEdit
