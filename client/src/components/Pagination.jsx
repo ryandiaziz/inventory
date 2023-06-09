@@ -47,7 +47,7 @@ const Pagination = ({ totalPosts, postPerPage, setCurrentPage, currentPage }) =>
                 <div className="flex items-center gap-2">
                     {
                         pages.map((page, i) => (
-                            <IconButton {...getItemProps(page)}>{page}</IconButton>
+                            <IconButton key={i} {...getItemProps(page)}>{page}</IconButton>
                         ))
                     }
                 </div>
