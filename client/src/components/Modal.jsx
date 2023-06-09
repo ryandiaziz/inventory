@@ -46,6 +46,7 @@ const Modal = (props) => {
     }
     const submitHandler = () => {
         if (props.edit) {
+            formik.setFieldValue('imageUrl', imageUrl)
             updateItem(formik.values.id, formik.values, () => {
                 props.setOpen(false)
                 props.setUpdated(!props.updated)
