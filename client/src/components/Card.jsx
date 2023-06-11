@@ -14,7 +14,7 @@ const CardC = (props) => {
         <Card className="w-64">
             <CardHeader shadow={false} floated={false} >
                 <img
-                    src={`https://635e-36-85-109-125.ngrok-free.app/${props.item.imageUrl}`}
+                    src={`https://99fa-36-85-109-167.ngrok-free.app/${props.item.imageUrl}`}
                     className="w-full object-cover h-40"
                     alt='Barang'
                 />
