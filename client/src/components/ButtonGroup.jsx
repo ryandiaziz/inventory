@@ -12,9 +12,10 @@ const ButtonGroupC = (props) => {
     const handleEdit = () => setEdit(!edit);
     const refreshData = () => props.setUpdated(!props.updated);
     const handleOpenDialog = () => setOpenDialog(!openDialog);
-    const handleDelete = (id) => {
-        deleteItem(id, (result) => {
-            if (result === 1) {
+    const handleDelete = (id, imageName) => {
+        console.log(id);
+        deleteItem(id, imageName, (result) => {
+            if (result.response === 1) {
                 refreshData()
                 props.setAlertS(true)
                 const timeout = setTimeout(() => {
@@ -43,6 +44,7 @@ const ButtonGroupC = (props) => {
                 handleOpen={handleOpenDialog}
                 handleDelete={handleDelete}
                 id={props.id}
+                imageName={props.imageName}
             />
             <ButtonGroup variant="outlined" color="purple">
                 <Button

@@ -42,6 +42,7 @@ function App() {
       />
       <MainContent
         items={items}
+        search={search}
         updated={updated}
         setUpdated={setUpdated}
         totalPosts={items.length}

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const URL = 'https://99fa-36-85-109-167.ngrok-free.app/api'
+const URL = 'https://inventory-api-firebase.vercel.app/'
 
 const readItem = async (cb) => {
     try {
@@ -14,11 +14,12 @@ const readItem = async (cb) => {
     }
 }
 
-const deleteItem = async (id, cb) => {
+const deleteItem = async (id, imageName, cb) => {
     try {
         let result = await axios({
             method: 'DELETE',
-            url: URL + `/delete/${id}`
+            url: URL + `delete/${id}`,
+            data: { imageName }
         })
         cb(result.data);
     } catch (error) {
@@ -30,7 +31,7 @@ const createItem = async (items, cb) => {
     try {
         let result = await axios({
             method: 'POST',
-            url: URL + "/create",
+            url: URL + "create",
             data: items,
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -46,7 +47,7 @@ const detailItem = async (id, cb) => {
     try {
         let result = await axios({
             method: 'GET',
-            url: URL + `/detail/${id}`
+            url: URL + `detail/${id}`
         })
         cb(result.data);
     } catch (error) {
@@ -58,7 +59,7 @@ const updateItem = async (id, datas, cb) => {
     try {
         await axios({
             method: 'PUT',
-            url: URL + `/update/${id}`,
+            url: URL + `update/${id}`,
             data: datas,
             headers: { 'Content-Type': 'multipart/form-data' }
         })

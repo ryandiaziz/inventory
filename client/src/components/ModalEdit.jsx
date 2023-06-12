@@ -31,22 +31,11 @@ const ModalEdit = (props) => {
 
     function handleUploadChange(e) {
         let uploaded = e.target.files[0];
-        formik.setFieldValue('imageUrl', uploaded);
-        setImageUrl(null);
+        formik.setFieldValue('filename', uploaded);
         setUploadImage(URL.createObjectURL(uploaded));
     }
 
     const submitHandler = () => {
-        // console.log(imageUrl.length);
-        // if (uploadImage !== null) {
-        //     console.log(formik.values.imageUrl);
-        //     console.log('upload');
-        // } else {
-        //     formik.setFieldValue('imageUrl', imageUrl)
-        //     console.log(formik.values.imageUrl);
-        //     console.log('ga upload');
-        // }
-        // console.log('baru di gas');
         updateItem(formik.values.id, formik.values, () => {
             props.setOpen(false)
             props.setUpdated(!props.updated)
@@ -78,7 +67,8 @@ const ModalEdit = (props) => {
             purchasePrice: undefined,
             sellPrice: undefined,
             stock: undefined,
-            imageUrl: null,
+            image: null,
+            filename: null,
         },
         onSubmit: submitHandler,
         validationSchema: yup.object().shape({
@@ -97,14 +87,18 @@ const ModalEdit = (props) => {
     useEffect(() => {
         if (props.edit) {
             detailItem(props.id, (result) => {
-                setImageUrl(result.imageUrl)
+                setImageUrl(result.image.url);
                 formik.setValues({
-                    id: result.id,
+                    id: props.id,
                     name: result.name,
-                    purchasePrice: result.purchasePrice,
-                    sellPrice: result.sellPrice,
-                    stock: result.stock,
-                    imageUrl: result.imageUrl,
+                    purchasePrice: +result.purchasePrice,
+                    sellPrice: +result.sellPrice,
+                    stock: +result.stock,
+                    imageName: result.image.name,
+                    image: {
+                        url: result.image.url,
+                        name: result.image.name,
+                    },
                 });
             })
         }
@@ -185,18 +179,12 @@ const ModalEdit = (props) => {
                         </div>
                         <div className="w-1/2">
                             {
-                                uploadImage === null && formik.values.imageUrl === null
-                                    ? <div htmlFor='image' className="bg-gray-100 h-32 w-32 rounded-full m-auto flex items-center justify-center mb-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-14 h-14">
-                                            <path fillRule="evenodd" d="M1 8a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 018.07 3h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0016.07 6H17a2 2 0 012 2v7a2 2 0 01-2 2H3a2 2 0 01-2-2V8zm13.5 3a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM10 14a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    : <img
-                                        src={uploadImage || `https://99fa-36-85-109-167.ngrok-free.app/${imageUrl}`}
-                                        className="img-thumbnail h-32 w-32 object-cover rounded-full mb-1 m-auto"
-                                        alt="Barang"
-                                        width="300px"
-                                    />
+                                <img
+                                    src={uploadImage || imageUrl}
+                                    className="img-thumbnail h-32 w-32 object-cover rounded-full mb-1 m-auto"
+                                    alt="Barang"
+                                    width="300px"
+                                />
                             }
                             <div className="w-full mb-1">
                                 <div className="text-[12px] m-auto">
@@ -234,7 +222,7 @@ const ModalEdit = (props) => {
                         >
                             <span>Batal</span>
                         </Button>
-                        <Button onClick={() => formik.values.imageUrl ? setImageUrl(true) : null} variant="filled" className="bg-[#00c9a7]" type="submit">
+                        <Button variant="filled" className="bg-[#00c9a7]" type="submit">
                             <span>Konfirmasi</span>
                         </Button>
                     </DialogFooter>

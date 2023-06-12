@@ -14,7 +14,7 @@ const CardC = (props) => {
         <Card className="w-64">
             <CardHeader shadow={false} floated={false} >
                 <img
-                    src={`https://99fa-36-85-109-167.ngrok-free.app/${props.item.imageUrl}`}
+                    src={props.item.image.url}
                     className="w-full object-cover h-40"
                     alt='Barang'
                 />
@@ -53,6 +53,7 @@ const CardC = (props) => {
             <CardFooter className="pt-0 m-auto">
                 <ButtonGroupC
                     id={props.item.id}
+                    imageName={props.item.image.name}
                     updated={props.updated}
                     setUpdated={props.setUpdated}
                     setAlertS={props.setAlertS}

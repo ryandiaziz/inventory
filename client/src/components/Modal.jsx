@@ -11,7 +11,7 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { setLocale } from 'yup';
-import { createItem, detailItem, updateItem } from "../axios/item";
+import { createItem } from "../axios/item";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 const Modal = (props) => {
@@ -20,10 +20,7 @@ const Modal = (props) => {
     const [purchaseP, setPurchaseP] = useState(false)
     const [sellP, setSellP] = useState(false)
     const [stock, setStock] = useState(false)
-    const [imageUrl, setImageUrl] = useState('')
-    const [item, setItem] = useState({})
     const [alertF, setAlertF] = useState(false)
-    const supported_format = ["image/jpg", "image/png"]
     const maxFIleSize = 102400
 
     const validFileExtensions = { image: ['jpg', 'png',] };
@@ -40,35 +37,25 @@ const Modal = (props) => {
 
     function handleUploadChange(e) {
         let uploaded = e.target.files[0];
-        formik.setFieldValue('imageUrl', uploaded);
-        setImageUrl('');
+        formik.setFieldValue('filename', uploaded);
         setUploadImage(URL.createObjectURL(uploaded));
     }
+
     const submitHandler = () => {
-        if (props.isEdit) {
-            console.log("MASOK");
-            // formik.setFieldValue('imageUrl', imageUrl)
-            // updateItem(formik.values.id, formik.values, () => {
-            //     props.setOpen(false)
-            //     props.setUpdated(!props.updated)
-            // })
-        } else {
-            // console.log(formik.values.imageUrl);
-            createItem(formik.values, (result) => {
-                if (result.data) {
-                    props.setOpen(false)
-                    props.setUpdated(!props.updated)
-                } else {
-                    setAlertF(true)
-                    const timeout = setTimeout(() => {
-                        setAlertF(false)
-                    }, 5000)
-                    return () => {
-                        clearTimeout(timeout)
-                    }
+        createItem(formik.values, (result) => {
+            if (result.data) {
+                props.setOpen(false)
+                props.setUpdated(!props.updated)
+            } else {
+                setAlertF(true)
+                const timeout = setTimeout(() => {
+                    setAlertF(false)
+                }, 5000)
+                return () => {
+                    clearTimeout(timeout)
                 }
-            })
-        }
+            }
+        })
     }
 
     const handleFocus = (e) => {
@@ -96,7 +83,7 @@ const Modal = (props) => {
             purchasePrice: undefined,
             sellPrice: undefined,
             stock: undefined,
-            imageUrl: null,
+            filename: null,
         },
         onSubmit: submitHandler,
         validationSchema: yup.object().shape({
@@ -104,7 +91,7 @@ const Modal = (props) => {
             purchasePrice: yup.number().typeError('Masukkan angka').required(),
             sellPrice: yup.number().typeError('Masukkan angka').required(),
             stock: yup.number().typeError('Masukkan angka').required(),
-            imageUrl: yup
+            filename: yup
                 .mixed()
                 .nullable()
                 .required()
@@ -127,36 +114,20 @@ const Modal = (props) => {
     };
 
     useEffect(() => {
-        if (!props.isEdit) {
-            setUploadImage(null);
-            formik.setValues({
-                name: '',
-                purchasePrice: undefined,
-                sellPrice: undefined,
-                stock: undefined,
-                imageUrl: null,
-            })
-            setName(false)
-            setPurchaseP(false)
-            setSellP(false)
-            setStock(false)
-        }
+        setUploadImage(null);
+        formik.setValues({
+            name: '',
+            purchasePrice: undefined,
+            sellPrice: undefined,
+            stock: undefined,
+            filename: null,
+        })
+        setName(false)
+        setPurchaseP(false)
+        setSellP(false)
+        setStock(false)
     }, [props.open])
 
-    useEffect(() => {
-        if (props.edit) {
-            detailItem(props.id, (result) => {
-                setImageUrl(result.imageUrl)
-                formik.setValues({
-                    id: result.id,
-                    name: result.name,
-                    purchasePrice: result.purchasePrice,
-                    sellPrice: result.sellPrice,
-                    stock: result.stock,
-                });
-            })
-        }
-    }, [props.edit])
     return (
         <>
             <Dialog open={props.open} handler={() => props.setOpen(false)}>
@@ -233,14 +204,14 @@ const Modal = (props) => {
                         </div>
                         <div className="w-1/2">
                             {
-                                uploadImage === null && formik.values.imageUrl === null
+                                uploadImage === null && formik.values.filename === null
                                     ? <div htmlFor='image' className="bg-gray-100 h-32 w-32 rounded-full m-auto flex items-center justify-center mb-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-14 h-14">
                                             <path fillRule="evenodd" d="M1 8a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 018.07 3h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0016.07 6H17a2 2 0 012 2v7a2 2 0 01-2 2H3a2 2 0 01-2-2V8zm13.5 3a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM10 14a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
                                         </svg>
                                     </div>
                                     : <img
-                                        src={uploadImage || `https://99fa-36-85-109-167.ngrok-free.app/${imageUrl}`}
+                                        src={uploadImage}
                                         className="img-thumbnail h-32 w-32 object-cover rounded-full mb-1 m-auto"
                                         alt="Barang"
                                         width="300px"
@@ -268,7 +239,7 @@ const Modal = (props) => {
                             </div>
                             {
                                 <div className="w-full flex justify-center">
-                                    <span className='text-pink-600 font-light text-sm mt-1'>{formik.errors.imageUrl}</span>
+                                    <span className='text-pink-600 font-light text-sm mt-1'>{formik.errors.filename}</span>
                                 </div>
                             }
                         </div>
@@ -282,7 +253,7 @@ const Modal = (props) => {
                         >
                             <span>Batal</span>
                         </Button>
-                        <Button onClick={() => formik.values.imageUrl ? setImageUrl(true) : null} variant="filled" className="bg-[#00c9a7]" type="submit">
+                        <Button variant="filled" className="bg-[#00c9a7]" type="submit">
                             <span>Konfirmasi</span>
                         </Button>
                     </DialogFooter>
