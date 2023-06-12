@@ -19,7 +19,7 @@ const ConfirmDialog = (props) => {
                 >
                     <span>Batal</span>
                 </Button>
-                <Button variant="filled" className='bg-[#00c9a7]' onClick={() => props.handleDelete(props.id)}>
+                <Button variant="filled" className='bg-[#00c9a7]' onClick={() => props.handleDelete(props.id, props.imageName)}>
                     <span>Konfirmasi</span>
                 </Button>
             </DialogFooter>

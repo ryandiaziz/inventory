@@ -7,6 +7,7 @@ import Pagination from './Pagination'
 
 const MainContent = ({
     items,
+    search,
     updated,
     setUpdated,
     currentPage,
@@ -53,7 +54,11 @@ const MainContent = ({
             </div>
             <div className='mx-auto max-w-screen-xl px-4 py-3 flex flex-wrap gap-5'>
                 {
-                    currentPosts.map((item) => (
+                    currentPosts.filter((item) => {
+                        return search.toLowerCase() === ''
+                            ? item
+                            : item.name.toLowerCase().includes(search);
+                    }).map((item) => (
                         <CardC
                             key={item.id}
                             item={item}
